@@ -10,14 +10,14 @@ export const Login = () => {
           <input
             type="email"
             placeholder="Digite seu Email"
-            className="rounded-full border border-gray-400 w-full px-4 py-2"
+            className="rounded-full border border-gray-400 w-full p-3"
           />
           <input
             type="password"
             placeholder="Digite sua Senha"
-            className="rounded-full border border-gray-400 w-full px-4 py-2"
+            className="rounded-full border border-gray-400 w-full p-3"
           />
-          <button className="text-white bg-primary-600 cursor-pointer w-full rounded-full p-4">
+          <button className="text-white bg-primary-600 cursor-pointer w-full rounded-full p-3">
             Entrar
           </button>
           <p className="justify-center">
