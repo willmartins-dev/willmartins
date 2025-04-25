@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 
-export const Login = ({ setUser }) => {
+export const Register = ({ user, setUser }) => {
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState("");
@@ -10,33 +11,43 @@ export const Login = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email && password) {
-      try {
-        const { data: userDoc } = await axios.post("/users/login", {
-          email,
-          password,
-        });
+    // if (email && password) {
+    //   try {
+    //     const { data: userDoc } = await axios.post("/users/login", {
+    //       email,
+    //       password,
+    //     });
 
-        setUser(userDoc);
-        setRedirect(true);
-      } catch (error) {
-        alert(`Erro ao fazer login: ${error.response.data}`);
-      }
-    } else {
-      alert("Você precisa digitar o email e senha!");
-    }
+    //     setUser(userDoc);
+    //     setRedirect(true);
+    //   } catch (error) {
+    //     alert(`Erro ao fazer login: ${error.response.data}`);
+    //   }
+    // } else {
+    //   alert("Você precisa digitar o email e senha!");
+    // }
   };
 
-  if (redirect) return <Navigate to="/" />;
+  if (redirect || user) return <Navigate to="/" />;
   return (
     <section className="flex items-center">
       <div className="gap-4 flex flex-col items-center max-w-96 mx-auto w-full">
-        <h2 className="text-3xl font-bold">Faça o login</h2>
+        <h2 className="text-3xl font-bold">Criar conta</h2>
         <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Digite seu Nome"
+            className="rounded-full border border-gray-400 w-full p-3"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
           <input
             type="email"
             placeholder="Digite seu Email"
             className="rounded-full border border-gray-400 w-full p-3"
+            value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -45,6 +56,7 @@ export const Login = ({ setUser }) => {
             type="password"
             placeholder="Digite sua Senha"
             className="rounded-full border border-gray-400 w-full p-3"
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -53,9 +65,9 @@ export const Login = ({ setUser }) => {
             Entrar
           </button>
           <p className="justify-center">
-            Ainda não tem conta?{" "}
-            <Link to="/register" className="font-bold underline">
-              Registrar-se
+            Já tem uma conta?{" "}
+            <Link to="/login" className="font-bold underline">
+              Faça login
             </Link>
           </p>
         </form>
@@ -63,3 +75,4 @@ export const Login = ({ setUser }) => {
     </section>
   );
 };
+export default Register;
