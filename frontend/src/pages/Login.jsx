@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { useUserContext } from "../context/UserContext";
 
-export const Login = ({ setUser }) => {
+export const Login = () => {
+  const { user } = useUserContext();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState("");
@@ -27,7 +29,7 @@ export const Login = ({ setUser }) => {
     }
   };
 
-  if (redirect) return <Navigate to="/" />;
+  if (redirect) return <Navigate to="/account/profile" />;
   return (
     <section className="flex items-center">
       <div className="gap-4 flex flex-col items-center max-w-96 mx-auto w-full">

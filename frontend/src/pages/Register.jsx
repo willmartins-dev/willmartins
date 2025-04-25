@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 
-export const Register = ({ user, setUser }) => {
+export const Register = () => {
+  const { user } = useUserContext();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -11,21 +12,22 @@ export const Register = ({ user, setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (email && password) {
-    //   try {
-    //     const { data: userDoc } = await axios.post("/users/login", {
-    //       email,
-    //       password,
-    //     });
+    if (email && password && name) {
+      try {
+        const { data: userDoc } = await axios.post("/users", {
+          name,
+          email,
+          password,
+        });
 
-    //     setUser(userDoc);
-    //     setRedirect(true);
-    //   } catch (error) {
-    //     alert(`Erro ao fazer login: ${error.response.data}`);
-    //   }
-    // } else {
-    //   alert("Você precisa digitar o email e senha!");
-    // }
+        setUser(userDoc);
+        setRedirect(true);
+      } catch (error) {
+        alert(`Erro ao fazer o cadastro: ${JSON.stringify(error)}`);
+      }
+    } else {
+      alert("Você precisa digitar todos os campos!");
+    }
   };
 
   if (redirect || user) return <Navigate to="/" />;

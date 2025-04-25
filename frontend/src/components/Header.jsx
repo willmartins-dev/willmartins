@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
-const Header = ({ user }) => {
+const Header = () => {
+  const { user } = useUserContext();
   return (
     <header className="shadow-md">
       <div className="flex items-center justify-between py-4 px-4 max-w-7xl mx-auto">
@@ -23,7 +25,10 @@ const Header = ({ user }) => {
               />
             </svg>
           </Link>
-          <Link className="flex items-center" to={user ? "/account" : "/login"}>
+          <Link
+            className="flex items-center"
+            to={user ? "/account/profile" : "/login"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
