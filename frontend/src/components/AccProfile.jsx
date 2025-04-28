@@ -10,7 +10,6 @@ const AccProfile = () => {
   const logout = async () => {
     try {
       const { data } = await axios.post("/users/logout");
-      console.log(data);
 
       setUser(null);
       setRedirect(true);

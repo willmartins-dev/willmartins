@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import AccProfile from "../components/AccProfile";
+import AccClients from "../components/AccClients";
 
 export const Account = () => {
   const { subpage } = useParams();
@@ -25,7 +26,10 @@ export const Account = () => {
             Configurações
           </Link>
         </div>
-        {subpage === "profile" && <AccProfile />}
+        <div className="w-full">
+          {subpage === "profile" && <AccProfile />}
+          {subpage === "clients" && <AccClients />}
+        </div>
       </div>
     </section>
   );

@@ -4,10 +4,10 @@ import axios from "axios";
 import { useUserContext } from "../context/UserContext";
 
 export const Login = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [redirect, setRedirect] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +18,10 @@ export const Login = () => {
           email,
           password,
         });
-
         setUser(userDoc);
         setRedirect(true);
       } catch (error) {
-        alert(`Erro ao fazer login: ${error.response.data}`);
+        alert(`Erro ao fazer login: ${JSON.stringify(error)}`);
       }
     } else {
       alert("Você precisa digitar o email e senha!");
