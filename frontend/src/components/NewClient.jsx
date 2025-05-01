@@ -1,21 +1,50 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useUserContext } from "../context/UserContext";
+import PhotoUploader from "./PhotoUploader";
 
 const NewClient = () => {
+  const { user } = useUserContext();
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState([]);
+  const [photolink, setPhotoLink] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState([]);
+  const [redirect, setRedirect] = useState(false);
 
   const handleClick = (target) => {
     const newType = target.checked
       ? [...type, target.value]
       : [...type].filter((type) => type !== target.value);
+    setType(newType);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (name && city && type) {
+      try {
+        const newClient = await axios.post("/clients", {
+          personal: user._id,
+          name,
+          city,
+          photo,
+          description,
+          type,
+        });
+        setRedirect(true);
+        console.log(newClient);
+      } catch (error) {
+        console.error(error);
+        alert("Deu erro ao tentar criar rum novo usuário!");
+      }
+    } else {
+      console.log("preencha todas as informações do formulário");
+    }
   };
+
+  if (redirect) return <Navigate to="/account/client/" />;
   return (
     <form onSubmit={handleSubmit} className="w-full px-6 flex flex-col gap-6">
       <div className="flex flex-col gap-1">
@@ -38,42 +67,7 @@ const NewClient = () => {
           onChange={(e) => setCity(e.target.value)}
         />
       </div>
-      <div className="flex flex-col gap-1">
-        <h2 className="font-bold text-2xl">Foto</h2>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="adicione uma foto"
-            className="rounded-full border border-gray-400 px-4 py-2 grow"
-            value={photo}
-            onChange={(e) => setPhoto(e.target.value)}
-          />
-          <button className="bg-gray-200 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-300">
-            Enviar Foto
-          </button>
-        </div>
-        <div className="grid grid-cols-5 gap-4">
-          <label
-            id="file"
-            className="mt-2 flex gap-2 items-center justify-center aspect-square rounded-2xl border border-gray-300 cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            Upload
-            <input type="file" className="hidden" htmlFor="file" />
-          </label>
-        </div>
-      </div>
+      <PhotoUploader {...{ photolink, setPhotoLink, setPhoto, photo }} />
       <div className="flex flex-col gap-1">
         <label className="text-2xl font-bold">Observação</label>
         <textarea
@@ -88,7 +82,7 @@ const NewClient = () => {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
           <label
             htmlFor="presencial"
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-2xl"
+            className="hover:bg-gray-100 cursor-pointer flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-2xl"
           >
             <input
               type="checkbox"
@@ -112,7 +106,7 @@ const NewClient = () => {
           </label>
           <label
             htmlFor="online"
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-2xl"
+            className="hover:bg-gray-100 cursor-pointer flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-2xl"
           >
             <input
               type="checkbox"
@@ -136,6 +130,23 @@ const NewClient = () => {
           </label>
         </div>
       </div>
+      <button className="flex items-center justify-center gap-3 cursor-pointer px-4 py-2 bg-black text-white rounded-full hover:bg-primary-600">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+        Salvar
+      </button>
     </form>
   );
 };

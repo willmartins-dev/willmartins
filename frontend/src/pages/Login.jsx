@@ -7,7 +7,6 @@ export const Login = () => {
   const { user, setUser } = useUserContext();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +27,7 @@ export const Login = () => {
     }
   };
 
-  if (redirect) return <Navigate to="/account/profile" />;
+  if (user) return <Navigate to="/account/profile" />;
   return (
     <section className="flex items-center">
       <div className="gap-4 flex flex-col items-center max-w-96 mx-auto w-full">

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import { useUserContext } from "../context/UserContext.jsx";
 
 export const Register = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");

@@ -6,7 +6,7 @@ const Header = () => {
   const { user } = useUserContext();
   return (
     <header className="shadow-md">
-      <div className="flex items-center justify-between py-4 px-4 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between py-4 px-4 max-w-7xl mx-auto w-full">
         <Link to="/" className="text-3xl text-primary-600">
           Personal Trainer
         </Link>
